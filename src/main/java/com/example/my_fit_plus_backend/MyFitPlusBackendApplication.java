@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MyFitPlusBackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MyFitPlusBackendApplication.class, args);
+        SpringApplication.run(MyFitPlusBackendApplication.class, args);
 	}
-
 }
