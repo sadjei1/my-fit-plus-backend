@@ -9,4 +9,5 @@ public class MyFitPlusBackendApplication {
 	public static void main(String[] args) {
         SpringApplication.run(MyFitPlusBackendApplication.class, args);
 	}
+
 }
