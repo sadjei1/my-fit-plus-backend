@@ -28,10 +28,16 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
+    public ResponseEntity<?> getUser(@PathVariable Long id) {
         Optional<User> user = userRepository.findById(id);
-        return user.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+
+        if (user.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("User not found with id: " + id);
+        }
+
+        return ResponseEntity.ok(user.get());
     }
 
     @PatchMapping("user/update/{id}")
