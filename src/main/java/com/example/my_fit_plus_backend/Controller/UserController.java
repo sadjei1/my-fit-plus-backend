@@ -40,6 +40,15 @@ public class UserController {
         return ResponseEntity.ok(user.get());
     }
 
+
+    @GetMapping("/user/find/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        return userRepository.findByEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
     @PatchMapping("user/update/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userUpdate) {
         try {
@@ -76,6 +85,8 @@ public class UserController {
         }
         return ResponseEntity.ok(allUsers);
     }
+
+
 
     @DeleteMapping("/user/delete/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
