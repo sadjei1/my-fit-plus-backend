@@ -3,4 +3,9 @@
 https://my-fit-plus-backend.onrender.com/
 
 
+
+# TO-DO
+A function that will encode/hash our password for the backend.
+
 Generate a Workout Model in Backend
+
