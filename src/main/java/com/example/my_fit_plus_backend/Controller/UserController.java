@@ -2,6 +2,7 @@ package com.example.my_fit_plus_backend.Controller;
 
 import com.example.my_fit_plus_backend.Model.User;
 import com.example.my_fit_plus_backend.Repository.UserRepository;
+import com.example.my_fit_plus_backend.Utility.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,8 @@ public class UserController {
 
     @PostMapping("/user/save")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
+        String hashedPassword = PasswordUtil.hashPassword(user.getPassword());
+        user.setPassword(hashedPassword);
         User savedUser = userRepository.save(user);
         return new ResponseEntity<>(savedUser,HttpStatus.CREATED);
     }
