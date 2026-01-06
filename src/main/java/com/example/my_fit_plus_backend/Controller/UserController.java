@@ -2,6 +2,7 @@ package com.example.my_fit_plus_backend.Controller;
 
 import com.example.my_fit_plus_backend.Model.User;
 import com.example.my_fit_plus_backend.Repository.UserRepository;
+import com.example.my_fit_plus_backend.Service.UserService;
 import com.example.my_fit_plus_backend.Utility.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,8 +16,9 @@ import java.util.Optional;
 @CrossOrigin(origins = {"http://localhost:3000", "https://myfitplus.vercel.app"})
 public class UserController {
 
+
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @RequestMapping("/sayHello")
     public String sayHello() {
@@ -27,13 +29,13 @@ public class UserController {
     public ResponseEntity<User> saveUser(@RequestBody User user) {
         String hashedPassword = PasswordUtil.hashPassword(user.getPassword());
         user.setPassword(hashedPassword);
-        User savedUser = userRepository.save(user);
+        User savedUser = userService.saveUser(user);
         return new ResponseEntity<>(savedUser,HttpStatus.CREATED);
     }
 
     @GetMapping("/user/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.getUser(id);
 
         if (user.isEmpty()) {
             return ResponseEntity
@@ -47,7 +49,7 @@ public class UserController {
 
     @GetMapping("/user/find/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-        return userRepository.findByEmail(email)
+        return userService.getUserByEmail(email)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -56,7 +58,7 @@ public class UserController {
     @PatchMapping("user/update/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userUpdate) {
         try {
-            Optional<User> userOptional = userRepository.findById(id);
+            Optional<User> userOptional = userService.getUser(id);
 
             if (userOptional.isPresent()) {
                 User existingUser = userOptional.get();
@@ -69,8 +71,11 @@ public class UserController {
                     existingUser.setEmail(userUpdate.getEmail());
                 }
                 // Add other fields as needed
+                if (userUpdate.getLastName() != null) {
+                    existingUser.setLastName(userUpdate.getLastName());
+                }
 
-                User savedUser = userRepository.save(existingUser);
+                User savedUser = userService.updateUser(id, existingUser);
                 return ResponseEntity.ok(savedUser);
             } else {
                 return ResponseEntity.notFound().build();
@@ -82,7 +87,7 @@ public class UserController {
 
     @GetMapping("/user/all")
     public ResponseEntity<List<User>> getUsers() {
-        List<User> allUsers = userRepository.findAll();
+        List<User> allUsers = userService.getAllUsers();
 
         if (allUsers.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -94,7 +99,7 @@ public class UserController {
 
     @DeleteMapping("/user/delete/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
+        userService.deleteUser(id);
         return ResponseEntity.ok().build();
     }
 
