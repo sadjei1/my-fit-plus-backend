@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -26,7 +27,7 @@ public class UserService {
     /*
     User service function to find a particular user.
      */
-    public Optional<User> getUser(Long id) {
+    public Optional<User> getUser(UUID id) {
         return userRepository.findById(id);
     }
 
@@ -43,7 +44,7 @@ public class UserService {
     /*
     User service to update a user
      */
-    public User updateUser(Long id, User userDetails) {
+    public User updateUser(UUID id, User userDetails) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id " + id));
 
@@ -59,7 +60,7 @@ public class UserService {
     /*
     User service to delete a user
      */
-    public void deleteUser(Long id) {
+    public void deleteUser(UUID id) {
         User user =  userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User with id: " + id +" not found."));
         userRepository.deleteById(id);
