@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000", "https://myfitplus.vercel.app"})
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<?> getUser(@PathVariable Long id) {
+    public ResponseEntity<?> getUser(@PathVariable UUID id) {
         Optional<User> user = userService.getUser(id);
 
         if (user.isEmpty()) {
@@ -56,7 +57,7 @@ public class UserController {
 
 
     @PatchMapping("user/update/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userUpdate) {
+    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody User userUpdate) {
         try {
             Optional<User> userOptional = userService.getUser(id);
 
@@ -98,7 +99,7 @@ public class UserController {
 
 
     @DeleteMapping("/user/delete/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<User> deleteUser(@PathVariable UUID id) {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
     }
