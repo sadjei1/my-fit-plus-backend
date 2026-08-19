@@ -13,7 +13,8 @@ import java.util.UUID;
 @Table(name = "users")
 public class User {
     @Id
-    private UUID id = UUID.randomUUID();
+    @Column(name = "user_id")
+    private UUID userId = UUID.randomUUID();
 
     private String firstName;
 
