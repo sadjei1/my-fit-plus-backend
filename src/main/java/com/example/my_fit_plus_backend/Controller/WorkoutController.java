@@ -2,12 +2,15 @@ package com.example.my_fit_plus_backend.Controller;
 
 import com.example.my_fit_plus_backend.Model.Workout;
 import com.example.my_fit_plus_backend.Service.WorkoutService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000", "https://myfitplus.vercel.app"})
 public class WorkoutController {
 
     WorkoutService workoutService;
@@ -27,7 +30,14 @@ public class WorkoutController {
     }
 
     @PostMapping("/api/workout/save")
-    public Workout createWorkout(@RequestBody Workout workout) {
+    public Workout createWorkout(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestBody Workout workout) {
+
+        UUID supabaseUserId = UUID.fromString(jwt.getSubject());
+
+        workout.setUserId(supabaseUserId);
+
         return workoutService.createWorkout(workout);
     }
 
