@@ -10,6 +10,7 @@ Generate a Workout Model in Backend
 
 #Spring Security Architecture
 1. Add authentication flow in your post front the frontend.
-2. Add spring Security's JWT Dependencies
-3. Configuring Spring security to trust Supabase
-4. Create your security config
+2. Add spring Security's JWT Dependencies.
+3. Configuring Spring security to trust Supabase.
+4. Create your security config.
+

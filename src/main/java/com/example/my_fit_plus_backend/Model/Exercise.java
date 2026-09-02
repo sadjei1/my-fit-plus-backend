@@ -1,5 +1,6 @@
 package com.example.my_fit_plus_backend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,8 +24,9 @@ public class Exercise {
     @Enumerated(EnumType.STRING)
     private WorkoutCategory category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "workout_id", nullable = false)
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "workout_id")
     private Workout workout;
 
     @OneToMany(
