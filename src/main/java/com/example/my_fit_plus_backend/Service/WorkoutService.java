@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,10 +24,9 @@ public class WorkoutService {
         return workoutRepository.findAll();
     }
 
-    public Workout getWorkout(UUID workoutID) {
-        return workoutRepository.findById(workoutID)
-                .orElseThrow(() ->
-                        new RuntimeException("Workout not found"));
+    public List<Workout> getWorkout(UUID userID) {
+        return workoutRepository.findByUserId(userID);
+
     }
 
     public void deleteWorkout(UUID workoutID) {
